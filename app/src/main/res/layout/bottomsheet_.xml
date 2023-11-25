@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/standard_bottom_sheet"
+        android:layout_width="wrap_content"
+        android:layout_height="243dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <!-- Bottom sheet contents. -->
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="94dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="33dp"
+                android:src="@drawable/patato" />
+
+
+            <TextView
+                android:id="@+id/_focus"
+                android:layout_width="328dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="33dp"
+                android:text="Focus"
+                android:textColor="@color/brown"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+
+        <ImageView
+
+            android:layout_width="99dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="98dp"
+            android:backgroundTint="@color/brown"
+            android:src="@drawable/delete" />
+
+        <TextView
+            android:id="@+id/_detele"
+            android:layout_width="328dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="98dp"
+            android:text="Detele"
+            android:textColor="@color/brown"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="99dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="165dp"
+            android:backgroundTint="@color/brown"
+            android:src="@drawable/finish" />
+
+        <TextView
+            android:id="@+id/_finish"
+            android:layout_width="328dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="165dp"
+            android:text="Finish"
+            android:textColor="@color/brown"
+            android:textSize="20sp" />
+
+
+    </FrameLayout>
+
+
+
+
+
+
+</FrameLayout>
