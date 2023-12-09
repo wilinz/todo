@@ -5,25 +5,46 @@ import android.os.Parcelable;
 
 import org.litepal.crud.LitePalSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Content extends LitePalSupport implements Parcelable {
-
+//实现接口
     private long id;
     private String title;
     private String describes;
     private String date;
+    private boolean isPinned = false;
+    private boolean isFinish = false;
+    private boolean isOver = false;
 
-    public Content() {
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    private String category;
+
+
+
+    public boolean isOver() {
+        return isOver;
+    }
+
+    public void setOver(boolean over) {
+        isOver = over;
     }
 
 
+
+    ///////////////////
     protected Content(Parcel in) {
         id = in.readLong();
         title = in.readString();
         describes = in.readString();
         date = in.readString();
+        isPinned = in.readByte() != 0;
+        isFinish = in.readByte() != 0;
     }
 
     @Override
@@ -32,6 +53,8 @@ public class Content extends LitePalSupport implements Parcelable {
         dest.writeString(title);
         dest.writeString(describes);
         dest.writeString(date);
+        dest.writeByte((byte) (isPinned ? 1 : 0));
+        dest.writeByte((byte) (isFinish ? 1 : 0));
     }
 
     @Override
@@ -50,6 +73,19 @@ public class Content extends LitePalSupport implements Parcelable {
             return new Content[size];
         }
     };
+
+    public boolean isFinish() {
+        return isFinish;
+    }
+
+    public void setFinish(boolean finish) {
+        isFinish = finish;
+    }
+
+    public Content() {
+    }
+
+    //////////////////////
 
     public User getUser() {
         return user;
@@ -92,5 +128,13 @@ public class Content extends LitePalSupport implements Parcelable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isPinned() {
+        return isPinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        isPinned = pinned;
     }
 }

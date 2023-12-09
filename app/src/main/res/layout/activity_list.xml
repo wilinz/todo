@@ -8,18 +8,28 @@
     android:layout_height="match_parent"
     tools:context=".list.ListActivity"
     android:fitsSystemWindows="true">
+
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="358dp"
-            android:layout_marginBottom="27dp"
-            android:src="@drawable/find" />
+
+        <ImageButton
+            android:id="@+id/_avatar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/avatar"
+            android:background="@drawable/bg_go"/>
+
+<!--        <ImageView-->
+<!--            android:layout_width="27dp"-->
+<!--            android:layout_height="27dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginEnd="358dp"-->
+<!--            android:layout_marginBottom="27dp"-->
+<!--            android:src="@drawable/find" />-->
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/float_button"
@@ -37,7 +47,8 @@
             android:foregroundGravity="center"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/outerRecyclerView"
+            android:layout_marginTop="46dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

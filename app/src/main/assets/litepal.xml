@@ -2,10 +2,11 @@
 <litepal>
     <dbname value="Userstash"></dbname>
 
-    <version value="7"></version>
+    <version value="30"></version>
     <list>
         <mapping class="com.example.myapplication.date.User"></mapping>
         <mapping class="com.example.myapplication.date.Content"></mapping>
+<!--        <mapping class="com.example.myapplication.date.Title"></mapping>-->
     </list>
 
 </litepal>

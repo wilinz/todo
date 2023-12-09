@@ -29,7 +29,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText loginName;
-    private EditText loginNumber;
+
     private EditText loginPassword;
     private boolean isHide = false;
     private ImageView displayPassword;
@@ -39,9 +39,11 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         TextView textView = findViewById(R.id.btn_5);
@@ -59,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         checkBox = findViewById(R.id.checkbox_password);
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isLoggedIn = pref.getBoolean("is_logged_in", false);
         User user = LitePal.where("islogin = ?", "1").findFirst(User.class);
         boolean isRemember = pref.getBoolean("remember_password", false);
         if (user !=null && isRemember) {
@@ -66,10 +69,19 @@ public class LoginActivity extends AppCompatActivity {
             loginPassword.setText(user.getPassword());
             checkBox.setChecked(true);
         }
+        if (isLoggedIn) {
+            // 如果用户已经登录，直接跳转到 ListActivity
+            Intent intent = new Intent(LoginActivity.this, ListActivity.class);
+            startActivity(intent);
+            finish(); // 结束当前的 LoginActivity
+        }
 
         displayPassword.setOnClickListener(this::onClick);
         displayPassword.setImageResource(R.drawable.show);
         login.setOnClickListener(this::onLoginClick);
+
+
+
 
 
     }
@@ -100,6 +112,10 @@ public class LoginActivity extends AppCompatActivity {
             LitePal.updateAll(User.class, values, "username <> ?", username);
 
             editor = pref.edit();
+            editor.putBoolean("is_logged_in", true);
+            editor.apply();
+
+            editor = pref.edit();
             if (checkBox.isChecked()) {
                 editor.putBoolean("remember_password", true);
             } else {
@@ -107,27 +123,13 @@ public class LoginActivity extends AppCompatActivity {
             }
             editor.apply();
 
+
             Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, ListActivity.class);
             startActivity(intent);
         }
 
-//        if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-//
-//
-//            editor = pref.edit();
-//            if (checkBox.isChecked()) {
-//                editor.putBoolean("remember_password", true);
-//                editor.putString("name", username);
-//                editor.putString("password", password);
-//            } else {
-//                editor.clear();
-//            }
-//            editor.apply();
-//            Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(LoginActivity.this, ListActivity.class);
-//            startActivity(intent);
-//        }
+
 
     }
 
@@ -135,12 +137,12 @@ public class LoginActivity extends AppCompatActivity {
 
         if (v.getId() == R.id.display_password) {
             if (isHide) {
-                displayPassword.setImageResource(R.drawable.show);
+                displayPassword.setImageResource(R.drawable.hidden);
                 TransformationMethod method1 = HideReturnsTransformationMethod.getInstance();
                 loginPassword.setTransformationMethod(method1);
                 isHide = false;
             } else {
-                displayPassword.setImageResource(R.drawable.hidden);
+                displayPassword.setImageResource(R.drawable.show);
                 TransformationMethod method = PasswordTransformationMethod.getInstance();
                 loginPassword.setTransformationMethod(method);
                 isHide = true;

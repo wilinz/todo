@@ -13,6 +13,9 @@
         <item
             android:id="@+id/completed_item"
             android:title="已完成事项数：" />
+        <item
+            android:id="@+id/overdue_item"
+            android:title="已过期事项数：" />
     </group>
 
 </menu>

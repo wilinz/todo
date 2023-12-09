@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/study"
+            android:title="学习" />
+        <item
+            android:id="@+id/life"
+            android:title="生活" />
+        <item
+            android:id="@+id/work"
+            android:title="工作" />
+        <item
+            android:id="@+id/family"
+            android:title="家庭" />
+        <item
+            android:id="@+id/other"
+            android:title="其他"/>
+    </group>
+
+</menu>
