@@ -74,6 +74,7 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterViewHol
             // 外部 item 展开状态
             sorttitle.setExpand(!sorttitle.isExpand());
             notifyItemChanged(position); // 更新新的item布局
+
         });
 
 
