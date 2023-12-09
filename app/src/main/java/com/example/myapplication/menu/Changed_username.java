@@ -12,17 +12,14 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.date.User;
-import com.example.myapplication.list.ListActivity;
 import com.example.myapplication.list.ModalBottomSheet;
-import com.example.myapplication.loginandregister.LoginActivity;
-import com.example.myapplication.loginandregister.RegisterActivity;
 
 import org.litepal.LitePal;
 
 import java.util.List;
 
 public class Changed_username extends AppCompatActivity {
-    private TextView textView;
+    private TextView finish;
     private ImageView imageView;
     private EditText editText;
 
@@ -32,7 +29,7 @@ public class Changed_username extends AppCompatActivity {
         setContentView(R.layout.activity_changed_username);
 
         imageView = findViewById(R.id.pol_1);
-        textView = findViewById(R.id.finish_1);
+        finish = findViewById(R.id.finish_1);
         editText = findViewById(R.id.edit_username);
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -44,25 +41,30 @@ public class Changed_username extends AppCompatActivity {
         });
 
 
-        String reusername = editText.getText().toString() ;
-        List<User> users = LitePal.findAll(User.class);
-        for (User user : users) {
-            if (user.getUsername().equals(reusername) ) {
-                Toast.makeText(Changed_username.this, "已存在该名称", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
 
-        User user = new User();
-        user.setUsername(reusername);
-        user.save();
 
-        textView.setOnClickListener(new View.OnClickListener() {
+//        List<User> users = LitePal.findAll(User.class);
+//        for (User user : users) {
+//
+//        }
+
+//        User user = new User();
+
+
+        finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String reusername = editText.getText().toString() ;
+                User user = LitePal.where("islogin = ?","1").findFirst(User.class);
+                if (user.getUsername().equals(reusername) ) {
+                    Toast.makeText(Changed_username.this, "已存在该名称", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                user.setUsername(reusername);
+                user.save();
                 Toast.makeText(Changed_username.this, "修改成功", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Changed_username.this, ModalBottomSheet.class);
-                startActivity(intent);
+//                Intent intent = new Intent(Changed_username.this, ModalBottomSheet.class);
+//                startActivity(intent);
             }
         });
 
