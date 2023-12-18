@@ -64,7 +64,7 @@ public class Add_list extends AppCompatActivity {
     private CharSequence channelNAME;
     private List<Content> list;
     private String category = "未分类";
-
+    private Content content;
 
 
     @Override
@@ -88,6 +88,12 @@ public class Add_list extends AppCompatActivity {
 //        Parcelable 类型数据。在这个场景中，"con" 可能是前一个 Activity 中放
 //        置的一个 Content 对象，它实现了 Parcelable 接口以便能够在不同的 Activity 之间传递。
         boolean isUpdate = (oldData != null);
+        
+       if (isUpdate) {
+                content = oldData;
+        } else {
+                content = new Content();
+        }
         if (isUpdate) {
             category = oldData.getCategory();
             title1.setText(oldData.getTitle());
@@ -128,18 +134,8 @@ public class Add_list extends AppCompatActivity {
             }
         });
 
-
-
-
         ImageView save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
-            Content content;
-            if (isUpdate) {
-                content = oldData;
-            } else {
-                content = new Content();
-            }
-
             content.setDescribes(describes1.getText().toString());
             content.setTitle(title1.getText().toString());
             content.setDate(dateTextView.getText().toString());
