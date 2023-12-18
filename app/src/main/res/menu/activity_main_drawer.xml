@@ -16,6 +16,10 @@
         <item
             android:id="@+id/overdue_item"
             android:title="已过期事项数：" />
+        <item
+            android:id="@+id/outlogin"
+            android:title="退出登录" />
+
     </group>
 
 </menu>

@@ -9,27 +9,33 @@
     tools:context=".list.ListActivity"
     android:fitsSystemWindows="true">
 
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
 
+<!--        <android.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="41dp"-->
+<!--            android:backgroundTint="@color/brown_1"-->
+<!--            android:src="@drawable/avatar"/>-->
+<!---->
         <ImageButton
             android:id="@+id/_avatar"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/avatar"
-            android:background="@drawable/bg_go"/>
+            android:background="@drawable/bg_go"
+            android:src="@drawable/avatar_1" />
 
-<!--        <ImageView-->
-<!--            android:layout_width="27dp"-->
-<!--            android:layout_height="27dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_marginEnd="358dp"-->
-<!--            android:layout_marginBottom="27dp"-->
-<!--            android:src="@drawable/find" />-->
+        <!--        <ImageView-->
+        <!--            android:layout_width="27dp"-->
+        <!--            android:layout_height="27dp"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginEnd="358dp"-->
+        <!--            android:layout_marginBottom="27dp"-->
+        <!--            android:src="@drawable/find" />-->
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/float_button"
@@ -39,19 +45,25 @@
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="31dp"
             android:layout_marginBottom="21dp"
+            android:backgroundTint="@color/brown"
             android:clickable="true"
             android:focusable="true"
-            android:backgroundTint="@color/brown"
-            app:fabCustomSize="45dp"
+            android:foregroundGravity="center"
             android:src="@drawable/add"
-            android:foregroundGravity="center"/>
+            app:fabCustomSize="45dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/outerRecyclerView"
-            android:layout_marginTop="46dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="46dp">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/outerRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="41dp" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -62,7 +74,6 @@
         app:headerLayout="@layout/header"
         app:insetForeground="@android:color/transparent"
         app:menu="@menu/activity_main_drawer" />
-
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

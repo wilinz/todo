@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,7 +138,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 holder.dl.closeDrawers();
                 //关闭抽屉
                 content.setPinned(false);
-                content.setToDefault("ispinned");
+                content.setToDefault("isPinned");
 //                名为 "ispinned" 的内容设置为默认值false
             }else {
                 holder.dl.closeDrawers();
@@ -168,6 +169,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             SpannableString spannableDate = new SpannableString(content.getDate());
             spannableDate.setSpan(new StrikethroughSpan(), 0, spannableDate.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+            Log.d( "onBindViewHolder: ","ugihhghu");
             holder.title.setText(spannableTitle);
             holder.describes.setText(spannableDescribes);
             holder.date.setText(spannableDate);
@@ -190,15 +192,15 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             holder.describes.setTextColor(Color.RED);
             holder.date.setTextColor(Color.RED);
         }else {
-            holder.title.setText(content.getTitle());
-            holder.describes.setText(content.getDescribes());
-            holder.date.setText(content.getDate());
+//            holder.title.setText(content.getTitle());
+//            holder.describes.setText(content.getDescribes());
+//            holder.date.setText(content.getDate());
         }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
 
     public void removeItem(int position) {

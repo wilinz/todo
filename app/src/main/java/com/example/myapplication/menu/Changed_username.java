@@ -35,8 +35,7 @@ public class Changed_username extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Changed_username.this,ModalBottomSheet.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -65,6 +64,7 @@ public class Changed_username extends AppCompatActivity {
                 Toast.makeText(Changed_username.this, "修改成功", Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(Changed_username.this, ModalBottomSheet.class);
 //                startActivity(intent);
+                finish();
             }
         });
 

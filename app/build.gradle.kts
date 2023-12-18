@@ -44,8 +44,7 @@ dependencies {
     implementation ("com.google.android.material:material:1.10.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.2")
     debugImplementation("com.guolindev.glance:glance:1.1.0")
-//    implementation("de.hdodenhof:circleimageview:3.1.0")
 
-
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
 }

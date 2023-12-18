@@ -1,5 +1,8 @@
 package com.example.myapplication.list;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -7,8 +10,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.bluetooth.BluetoothManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -17,7 +23,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.ContentAdapter;
 import com.example.myapplication.OuterAdapter;
@@ -25,6 +33,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.date.Content;
 import com.example.myapplication.date.Title;
 import com.example.myapplication.date.User;
+import com.example.myapplication.loginandregister.RegisterActivity;
 import com.example.myapplication.menu.Changed_password;
 import com.example.myapplication.menu.Changed_username;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,8 +54,25 @@ public class ListActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView tv_username;
     private ImageButton imageButton;
-    RecyclerView outerRecyclerView;
+    private  RecyclerView outerRecyclerView;
+    private SwipeRefreshLayout refreshlayout;
 
+//    private LayoutPhotoActivityBinding binding;
+    private ActivityResultLauncher<String>   mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+        new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri uri) {
+                if (uri != null) {
+                    selectavatar.setImageURI(uri);
+
+                } else {
+                    Toast.makeText(ListActivity.this, "没有选择照片", Toast.LENGTH_SHORT).show();
+//                            mGetContent.launch("image/*");
+                }
+            }
+        });
+
+    private ImageView selectavatar;
     private List<Content> contentList = new ArrayList<>();
     private List<Title> titleList = new ArrayList<>();
 
@@ -71,6 +97,9 @@ public class ListActivity extends AppCompatActivity {
         imageButton = findViewById(R.id._avatar);
 //        recycleView = findViewById(R.id.innerRecyclerView);
         outerRecyclerView = findViewById(R.id.outerRecyclerView);
+        refreshlayout = findViewById(R.id.refreshlayout);
+
+
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,14 +107,49 @@ public class ListActivity extends AppCompatActivity {
                 openNavigationView();
             }
         });
+        refreshlayout.setColorSchemeColors(getResources().getColor( R.color.brown_1));
+        refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
 
+            }
+        });
 
+    }
+
+    private void refresh(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initTitles();
+                        initContents();
+//                        RecyclerView recyclerView = findViewById(R.id.outerRecyclerView);
+                        RecyclerView.Adapter adapter = outerRecyclerView.getAdapter();
+                        if (adapter != null) {
+                            adapter.notifyDataSetChanged();
+                        }
+                        refreshlayout.setRefreshing(false);
+
+                    }
+                });
+            }
+        }).start();
     }
 
     private void openNavigationView() {
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         drawerLayout.openDrawer(GravityCompat.START);
         navigationView = findViewById(R.id.navigationView);
+        selectavatar = findViewById(R.id.picture);
         tv_username = navigationView.getHeaderView(0).findViewById(R.id.tv_username);
         User user = LitePal.where("islogin = ?", "1").findFirst(User.class);
         tv_username.setText(user.getUsername());
@@ -111,6 +175,8 @@ public class ListActivity extends AppCompatActivity {
         overdueitem.setTitle("已过期事项数：" + overdueItemCount);
 
 
+        selectavatar.setOnClickListener(this::onClick);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -123,12 +189,25 @@ public class ListActivity extends AppCompatActivity {
                     Intent intent = new Intent(ListActivity.this, Changed_password.class);
                     startActivity(intent);
                 }
+                if(item.getItemId() == R.id.outlogin){
+                    user.setLogin(false);
+                    user.setToDefault("isLogin");
+                    user.setUsername(null);
+                    user.setPassword(null);
+                    user.setRepassword(null);
+                    Intent intent = new Intent(ListActivity.this, RegisterActivity.class);
+                    startActivity(intent);
+                }
+
 
                 item.setCheckable(false);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
+
+
+
 
         ViewGroup.LayoutParams mLayoutParams = navigationView.getLayoutParams();
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 250, getResources().getDisplayMetrics());
@@ -137,7 +216,9 @@ public class ListActivity extends AppCompatActivity {
 
     }
 
-
+    public void onClick(View v) {
+        mGetContent.launch("image/*");
+    }
     public void initContents() {
         contentList = LitePal.order("ispinned desc").order("datetime('date') desc").find(Content.class);
         Log.d("initContents: ", contentList.toString());

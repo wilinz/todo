@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             // 如果用户已经登录，直接跳转到 ListActivity
             Intent intent = new Intent(LoginActivity.this, ListActivity.class);
             startActivity(intent);
-            finish(); // 结束当前的 LoginActivity
+            finish();
         }
 
         displayPassword.setOnClickListener(this::onClick);

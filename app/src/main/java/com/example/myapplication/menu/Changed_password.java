@@ -35,31 +35,33 @@ public class Changed_password extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Changed_password.this, ModalBottomSheet.class);
-                startActivity(intent);
+                finish();
             }
         });
 
 
-        String repassword = editText.getText().toString() ;
-        List<User> users = LitePal.findAll(User.class);
-        for (User user : users) {
-            if (user.getUsername().equals(repassword) ) {
-                Toast.makeText(Changed_password.this, "已存在该密码", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-
-        User user = new User();
-        user.setUsername(repassword);
-        user.save();
+//        String repassword = editText.getText().toString() ;
+//        List<User> users = LitePal.findAll(User.class);
+//        for (User user : users) {
+//            if (user.getUsername().equals(repassword) ) {
+//                Toast.makeText(Changed_password.this, "已存在该密码", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//        }
+//
+//        User user = new User();
+//        user.setUsername(repassword);
+//        user.save();
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String newPassword = editText.getText().toString() ;
+                User user = LitePal.where("islogin = ?","1").findFirst(User.class);
+                user.setPassword(newPassword);
+                user.save();
                 Toast.makeText(Changed_password.this, "修改成功", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Changed_password.this, ModalBottomSheet.class);
-                startActivity(intent);
+                finish();
             }
         });
 

@@ -51,15 +51,18 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterViewHol
         Log.d("onBindViewHolder: ", String.valueOf(sorttitle.isExpand()));
         if (sorttitle.isExpand()){
             //找到对应该分类的子item来获取item数目
-            List<Content> subitems = LitePal.where("category = ?", sorttitle.getCategory()).find(Content.class);
-            Log.d(TAG, subitems.toString());
+            if (sorttitle.getContentList()==null){
+                List<Content> subitems = LitePal.where("category = ?", sorttitle.getCategory()).find(Content.class);
+                Log.d(TAG, subitems.toString());
+                sorttitle.setContentList(subitems);
+            }
             // 创建内部 RecyclerView 的 Adapter
             LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext());
             holder.innerRecyclerView.setLayoutManager(layoutManager);
 //            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(holder.itemView.getContext(), layoutManager.getOrientation());
 //            holder.innerRecyclerView.addItemDecoration(dividerItemDecoration);
 
-            ContentAdapter contentAdapter = new ContentAdapter(subitems, null, fragmentManager);
+            ContentAdapter contentAdapter = new ContentAdapter(sorttitle.getContentList(), null, fragmentManager);
             holder.innerRecyclerView.setAdapter(contentAdapter);
             // 设置内部 RecyclerView 的布局管理器
 
@@ -83,6 +86,7 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterViewHol
     public int getItemCount() {
         return titles.size();
     }
+
 
     public static class OuterViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;

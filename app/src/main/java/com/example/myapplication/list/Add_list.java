@@ -10,6 +10,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -65,6 +66,7 @@ public class Add_list extends AppCompatActivity {
     private String category = "未分类";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,9 @@ public class Add_list extends AppCompatActivity {
         endDate = findViewById(R.id._time);
         pinned = findViewById(R.id.pinned);
         sortPicker = findViewById(R.id.sort);
+        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+
 
         Content oldData = getIntent().getParcelableExtra("con");
 //        具体来说，getIntent() 用于获取启动当前 Activity 的 Intent 对象，
@@ -173,12 +178,14 @@ public class Add_list extends AppCompatActivity {
     public void onClick(View v) {
         MaterialDatePicker.Builder<Long> pairBuilder = MaterialDatePicker.Builder.datePicker();
         MaterialDatePicker<Long> picker = pairBuilder
+                .setSelection(System.currentTimeMillis())
                 .build();
 
 
         picker.show(getSupportFragmentManager(), picker.toString());
         picker.addOnPositiveButtonClickListener(selection -> {
-            Content content = new Content();
+//           Content content = new Content();
+//            Content previousContent = getContentFromPreviousContext();
             LocalDate Date = LocalDateTime.ofInstant(Instant.ofEpochMilli(selection), ZoneId.systemDefault()).toLocalDate();
 
             if (Date.equals(LocalDate.now())) {
@@ -213,7 +220,6 @@ public class Add_list extends AppCompatActivity {
                 int hour = timePicker.getHour();
                 int minute = timePicker.getMinute();
                 LocalDateTime DataTime = Date.atTime(hour, minute);
-
                 DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String DateText = DataTime.format(pattern);
 //                String endDateText = endDataTime.format(pattern);

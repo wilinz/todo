@@ -137,4 +137,19 @@ public class Content extends LitePalSupport implements Parcelable {
     public void setPinned(boolean pinned) {
         isPinned = pinned;
     }
+
+    @Override
+    public String toString() {
+        return "Content{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", describes='" + describes + '\'' +
+                ", date='" + date + '\'' +
+                ", isPinned=" + isPinned +
+                ", isFinish=" + isFinish +
+                ", isOver=" + isOver +
+                ", category='" + category + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }

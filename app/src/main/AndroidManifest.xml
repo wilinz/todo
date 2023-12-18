@@ -16,7 +16,7 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
-            android:name=".list.focus_activity"
+            android:name=".list.Focus_activity"
             android:exported="false" />
         <activity
             android:name=".menu.Changed_password"

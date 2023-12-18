@@ -2,6 +2,7 @@ package com.example.myapplication.date;
 
 import org.litepal.crud.LitePalSupport;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Title{
@@ -19,6 +20,17 @@ public class Title{
     private boolean isExpand = false;
 
     private String category;
+
+
+    public List<Content> getContentList() {
+        return contentList;
+    }
+
+    public void setContentList(List<Content> contentList) {
+        this.contentList = contentList;
+    }
+
+    private List<Content> contentList;
 
     public String getCategory() {
         return category;
@@ -50,4 +62,5 @@ public class Title{
     public int hashCode() {
         return Objects.hash(category);
     }
+
 }
