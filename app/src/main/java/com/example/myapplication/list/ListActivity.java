@@ -130,8 +130,8 @@ public class ListActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
-                    Thread.sleep(1500);
+                try {
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -159,7 +159,17 @@ public class ListActivity extends AppCompatActivity {
         selectavatar = findViewById(R.id.picture);
         tv_username = navigationView.getHeaderView(0).findViewById(R.id.tv_username);
         User user = LitePal.where("islogin = ?", "1").findFirst(User.class);
-        tv_username.setText(user.getUsername());
+        String username = "未登录";
+        // 判空
+        if (user != null) {
+            username = user.getUsername();
+        }
+
+        // 点击用户名也可以打开 LoginActivity
+        tv_username.setOnClickListener(v -> {
+            goToLoginActivity();
+        });
+        tv_username.setText(username);
         //                    这行代码的作用是使用 LitePal 数据库框架来获取名为 "Content" 的表中的记录数量，并将结果存储在 `itemCount` 变量中。
 //                    1. `LitePal` 是一个轻量级的开源数据库框架，用于在 Android 应用程序中进行数据库操作。
 //                    2. `count()` 是 LitePal 框架提供的一个方法，用于获取指定表中的记录数量。
@@ -184,35 +194,31 @@ public class ListActivity extends AppCompatActivity {
 
 
         selectavatar.setOnClickListener(this::onClick);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        navigationView.setNavigationItemSelectedListener(item -> {
 
-                if (item.getItemId() == R.id.changed_uesrname) {
-                    Intent intent = new Intent(ListActivity.this, Changed_username.class);
-                    startActivity(intent);
-                }
-                if (item.getItemId() == R.id.changed_password) {
-                    Intent intent = new Intent(ListActivity.this, Changed_password.class);
-                    startActivity(intent);
-                }
-                if(item.getItemId() == R.id.outlogin){
+            if (item.getItemId() == R.id.changed_uesrname) {
+                Intent intent = new Intent(ListActivity.this, Changed_username.class);
+                startActivity(intent);
+            }
+            if (item.getItemId() == R.id.changed_password) {
+                Intent intent = new Intent(ListActivity.this, Changed_password.class);
+                startActivity(intent);
+            }
+            if (item.getItemId() == R.id.outlogin) {
+                // 判空
+                if (user != null) {
                     user.setLogin(false);
                     user.setToDefault("isLogin");
                     user.save();
-                    Intent intent = new Intent(ListActivity.this , LoginActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    intent.putExtra("username", user.getUsername());
-//                    intent.putExtra("password", user.getPassword());
-                    startActivity(intent);
-                    finish();
                 }
-
-
-                item.setCheckable(false);
-                drawerLayout.closeDrawer(GravityCompat.START);
-                return true;
+                Toast.makeText(this, "退出登录成功!", Toast.LENGTH_SHORT).show();
+                goToLoginActivity();
             }
+
+
+            item.setCheckable(false);
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
         });
 
 
@@ -223,6 +229,16 @@ public class ListActivity extends AppCompatActivity {
         mLayoutParams.width = width;
         navigationView.setLayoutParams(mLayoutParams);
 
+    }
+
+    // 封装函数
+    private void goToLoginActivity() {
+        Intent intent = new Intent(ListActivity.this, LoginActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    intent.putExtra("username", user.getUsername());
+//                    intent.putExtra("password", user.getPassword());
+        startActivity(intent);
+        finish();
     }
 
     public void onClick(View v) {
@@ -240,9 +256,15 @@ public class ListActivity extends AppCompatActivity {
     }
 
     public void initTitles() {
-        List<Content> categoryList = LitePal.select("category").find(Content.class);
-        titleList = CollectionsKt.map(categoryList, content -> new Title(content.getCategory(), false));
-        titleList = CollectionsKt.distinct(titleList);
+        // 根据用户获取 Content
+        User currentUser = User.getSignedInUser();
+        if (currentUser == null) {
+            titleList = CollectionsKt.emptyList();
+        } else {
+            List<Content> categoryList = LitePal.select("category").where("user_id = ?", "" + currentUser.getId()).find(Content.class);
+            titleList = CollectionsKt.map(categoryList, content -> new Title(content.getCategory(), false));
+            titleList = CollectionsKt.distinct(titleList);
+        }
 //        titleList = new ArrayList<>();
 //        for (int i = 0; i < categoryList.size(); i++) {
 //            titleList.add(new Title(categoryList.get(i), false));

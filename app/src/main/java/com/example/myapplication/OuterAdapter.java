@@ -15,10 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.date.Content;
 import com.example.myapplication.date.Title;
+import com.example.myapplication.date.User;
 
 import org.litepal.LitePal;
 
 import java.util.List;
+
+import kotlin.collections.CollectionsKt;
 
 public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterViewHolder>{
     private List<Title> titles;
@@ -50,13 +53,18 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterViewHol
         holder.titleTextView.setText(category);
         holder.titleTextView.setTextColor(Color.parseColor("#A78569"));
 
+        User currentUser = User.getSignedInUser();
         Log.d("onBindViewHolder: ", String.valueOf(sorttitle.isExpand()));
         if (sorttitle.isExpand()){
             //找到对应该分类的子item来获取item数目
             if (sorttitle.getContentList()==null){
-                List<Content> subitems = LitePal.where("category = ?", sorttitle.getCategory()).find(Content.class);
-                Log.d(TAG, subitems.toString());
-                sorttitle.setContentList(subitems);
+                // 根据用户获取 Content
+                if (currentUser != null) {
+                    List<Content> subitems = LitePal.where("category = ?", sorttitle.getCategory()).where("user_id = ?", "" + currentUser.getId()).find(Content.class);
+                    sorttitle.setContentList(subitems);
+                }else {
+                    sorttitle.setContentList(CollectionsKt.emptyList());
+                }
             }
             // 创建内部 RecyclerView 的 Adapter
             LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext());

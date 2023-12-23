@@ -25,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                // 传递标志
+                intent.putExtra(LoginActivity.isOpenFromMainActivityKey, true);
                 startActivity(intent);
+                finish();
             }
         };
 

@@ -95,7 +95,8 @@ public class Content extends LitePalSupport implements Parcelable {
         this.user = user;
     }
 
-    private User user;
+    // 与 User 表关联
+    public User user;
 
     public String getTitle() {
         return title;

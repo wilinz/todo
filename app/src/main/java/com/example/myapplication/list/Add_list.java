@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.example.myapplication.PinnedComparator;
 import com.example.myapplication.R;
 import com.example.myapplication.date.Content;
+import com.example.myapplication.date.User;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -139,6 +140,15 @@ public class Add_list extends AppCompatActivity {
             content.setTitle(title1.getText().toString());
             content.setDate(dateTextView.getText().toString());
             content.setCategory(category);
+
+            // 将 Content 与 当前登录的 User 关联
+            User currentUser = User.getSignedInUser();
+            if (currentUser != null) {
+                content.setUser(currentUser);
+            }else {
+                Toast.makeText(this,"您未登录，无法添加待办事项",Toast.LENGTH_SHORT).show();
+            }
+
             if (isUpdate){
                 content.update(content.getId());
             }else {

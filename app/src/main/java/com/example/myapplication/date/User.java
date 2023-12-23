@@ -1,4 +1,5 @@
 package com.example.myapplication.date;
+import org.litepal.LitePal;
 import org.litepal.annotation.Column;
 import org.litepal.crud.LitePalSupport;
 
@@ -11,6 +12,11 @@ public class User extends LitePalSupport {
     private String repassword;
     private String  password;
     private boolean isLogin;
+
+    private boolean isRemember = false;
+
+    // 关联 Content 表，多对一
+    public List<Content> contents;
 
     @Column(unique = true, index = true)
     private  String username;
@@ -56,6 +62,18 @@ public class User extends LitePalSupport {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isRemember() {
+        return isRemember;
+    }
+
+    public void setRemember(boolean remember) {
+        isRemember = remember;
+    }
+
+    public static User getSignedInUser(){
+        return LitePal.where("islogin = ?", "1").findFirst(User.class);
     }
 }
 

@@ -38,13 +38,17 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
-
+    // isOpenFromMainActivity 的 key
+    public static String isOpenFromMainActivityKey = "isOpenFromMainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+
+        // 判断是否是从Main启动
+        boolean isOpenFromMainActivity = getIntent().getBooleanExtra(isOpenFromMainActivityKey,false);
 
         TextView textView = findViewById(R.id.btn_5);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -67,16 +71,17 @@ public class LoginActivity extends AppCompatActivity {
 //            loginName.setText(username1);
 //            loginPassword.setText(password1);
 //        }else{
-            pref = PreferenceManager.getDefaultSharedPreferences(this);
-            boolean isLoggedIn = pref.getBoolean("is_logged_in", false);
-            User user = LitePal.where("islogin = ?", "1").findFirst(User.class);
-            boolean isRemember = pref.getBoolean("remember_password", false);
-            if (user !=null && isRemember) {
+//            pref = PreferenceManager.getDefaultSharedPreferences(this);
+//            boolean isLoggedIn = pref.getBoolean("is_logged_in", false);
+            User user = User.getSignedInUser();
+//            boolean isRemember = pref.getBoolean("remember_password", false);
+            if (user !=null && user.isRemember()) {
                 loginName.setText(user.getUsername());
                 loginPassword.setText(user.getPassword());
                 checkBox.setChecked(true);
             }
-            if (isLoggedIn) {
+            // 从Main启动可以直接判断并进入主活动
+            if (user != null && isOpenFromMainActivity) {
                 Intent intent = new Intent(LoginActivity.this, ListActivity.class);
                 startActivity(intent);
                 finish();
@@ -109,22 +114,25 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "密码不正确！", Toast.LENGTH_SHORT).show();
         } else {
             user.setLogin(true);
+            user.setRemember(checkBox.isChecked());
             user.update(user.getId());
+
             ContentValues values = new ContentValues();
             values.put("islogin", false);
             LitePal.updateAll(User.class, values, "username <> ?", username);
 
-            editor = pref.edit();
-            editor.putBoolean("is_logged_in", true);
-            editor.apply();
-
-            editor = pref.edit();
-            if (checkBox.isChecked()) {
-                editor.putBoolean("remember_password", true);
-            } else {
-                editor.clear();
-            }
-            editor.apply();
+            // 不再使用
+//            editor = pref.edit();
+//            editor.putBoolean("is_logged_in", true);
+//            editor.apply();
+//
+//            editor = pref.edit();
+//            if (checkBox.isChecked()) {
+//                editor.putBoolean("remember_password", true);
+//            } else {
+//                editor.clear();
+//            }
+//            editor.apply();
 
 
 
