@@ -47,8 +47,6 @@ public class Focus_activity extends AppCompatActivity {
             timer.start();
         });
 
-//        pause.setOnClickListener(this::onClick);
-
         cancel.setOnClickListener(v -> {
             // 取消倒计时
             timer.cancel();

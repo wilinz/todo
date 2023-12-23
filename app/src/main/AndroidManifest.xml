@@ -32,6 +32,7 @@
             android:exported="false" />
         <activity
             android:name=".list.ListActivity"
+            android:label=""
             android:exported="false" />
         <activity
             android:name=".loginandregister.RegisterActivity"

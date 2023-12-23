@@ -29,7 +29,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
    private FragmentManager fragmentManager;
    private LinearLayoutManager layoutManager;
 
-    private List<Content> list;//内部
+    private List<Content> list;
+//    定义了一个私有的列表，该列表只能存储Content类型的对象，并且该列表被命名为list//内部
 
     public ContentAdapter (List<Content> list,LinearLayoutManager layoutManager, FragmentManager fragmentManager){
         this.layoutManager = layoutManager;
@@ -192,9 +193,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             holder.describes.setTextColor(Color.RED);
             holder.date.setTextColor(Color.RED);
         }else {
-//            holder.title.setText(content.getTitle());
-//            holder.describes.setText(content.getDescribes());
-//            holder.date.setText(content.getDate());
         }
     }
 

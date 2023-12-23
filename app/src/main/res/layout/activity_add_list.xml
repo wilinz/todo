@@ -70,18 +70,7 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:src="@drawable/sort"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/line"/>
 
-        <ImageView
-            android:id="@+id/pinned"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:src="@drawable/top"/>
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"

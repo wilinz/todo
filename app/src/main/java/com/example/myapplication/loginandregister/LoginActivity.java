@@ -60,29 +60,32 @@ public class LoginActivity extends AppCompatActivity {
         login = findViewById(R.id.btn_2);
         checkBox = findViewById(R.id.checkbox_password);
 
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isLoggedIn = pref.getBoolean("is_logged_in", false);
-        User user = LitePal.where("islogin = ?", "1").findFirst(User.class);
-        boolean isRemember = pref.getBoolean("remember_password", false);
-        if (user !=null && isRemember) {
-            loginName.setText(user.getUsername());
-            loginPassword.setText(user.getPassword());
-            checkBox.setChecked(true);
-        }
-        if (isLoggedIn) {
-            // 如果用户已经登录，直接跳转到 ListActivity
-            Intent intent = new Intent(LoginActivity.this, ListActivity.class);
-            startActivity(intent);
-            finish();
-        }
+//        String username1 = getIntent().getParcelableExtra("username");
+//        String password1 = getIntent().getParcelableExtra("password");
+//        boolean reLogin =( (username1 != null) && (password1 != null));
+//        if(reLogin){
+//            loginName.setText(username1);
+//            loginPassword.setText(password1);
+//        }else{
+            pref = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean isLoggedIn = pref.getBoolean("is_logged_in", false);
+            User user = LitePal.where("islogin = ?", "1").findFirst(User.class);
+            boolean isRemember = pref.getBoolean("remember_password", false);
+            if (user !=null && isRemember) {
+                loginName.setText(user.getUsername());
+                loginPassword.setText(user.getPassword());
+                checkBox.setChecked(true);
+            }
+            if (isLoggedIn) {
+                Intent intent = new Intent(LoginActivity.this, ListActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
-        displayPassword.setOnClickListener(this::onClick);
-        displayPassword.setImageResource(R.drawable.show);
-        login.setOnClickListener(this::onLoginClick);
-
-
-
-
+            displayPassword.setOnClickListener(this::onClick);
+            displayPassword.setImageResource(R.drawable.show);
+            login.setOnClickListener(this::onLoginClick);
+//        }
 
     }
 
@@ -122,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.clear();
             }
             editor.apply();
+
 
 
             Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();

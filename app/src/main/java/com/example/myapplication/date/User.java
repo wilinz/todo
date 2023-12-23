@@ -14,7 +14,7 @@ public class User extends LitePalSupport {
 
     @Column(unique = true, index = true)
     private  String username;
-    private List<Content> contentList = new ArrayList<Content>();
+
 
 
     public String getRepassword() {

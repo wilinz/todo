@@ -14,19 +14,19 @@
         android:layout_height="match_parent">
 
 
-<!--        <android.widget.Toolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="41dp"-->
-<!--            android:backgroundTint="@color/brown_1"-->
-<!--            android:src="@drawable/avatar"/>-->
-<!---->
-        <ImageButton
-            android:id="@+id/_avatar"
-            android:layout_width="45dp"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@drawable/bg_go"
-            android:src="@drawable/avatar_1" />
+            android:background="@color/brown_2"
+            app:navigationIcon="@drawable/avatar"/>
+<!---->
+<!--        <ImageButton-->
+<!--            android:id="@+id/_avatar"-->
+<!--            android:layout_width="45dp"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:background="@drawable/bg_go"-->
+<!--            android:src="@drawable/avatar_1" />-->
 
         <!--        <ImageView-->
         <!--            android:layout_width="27dp"-->

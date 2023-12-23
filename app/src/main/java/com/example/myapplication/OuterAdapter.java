@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterViewHol
         // 设置外部 item 的数据
         String category = sorttitle.getCategory();
         holder.titleTextView.setText(category);
+        holder.titleTextView.setTextColor(Color.parseColor("#A78569"));
 
         Log.d("onBindViewHolder: ", String.valueOf(sorttitle.isExpand()));
         if (sorttitle.isExpand()){
@@ -59,18 +61,12 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterViewHol
             // 创建内部 RecyclerView 的 Adapter
             LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext());
             holder.innerRecyclerView.setLayoutManager(layoutManager);
-//            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(holder.itemView.getContext(), layoutManager.getOrientation());
-//            holder.innerRecyclerView.addItemDecoration(dividerItemDecoration);
-
+            holder.innerRecyclerView.setVisibility(View.VISIBLE);
+            holder.innerRecyclerView.addItemDecoration(new DividerItemDecoration( holder.innerRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
             ContentAdapter contentAdapter = new ContentAdapter(sorttitle.getContentList(), null, fragmentManager);
             holder.innerRecyclerView.setAdapter(contentAdapter);
-            // 设置内部 RecyclerView 的布局管理器
 
-            // 设置内部 RecyclerView 的分割线
-
-            holder.innerRecyclerView.setVisibility(View.VISIBLE); //
         }else {
-//            holder.innerRecyclerView.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnClickListener(v -> {
@@ -96,16 +92,6 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterViewHol
             super(itemView);
             innerRecyclerView = itemView.findViewById(R.id.innerRecyclerView);
             titleTextView = itemView.findViewById(R.id.sort_title);
-            //布局管理器
-//        LinearLayoutManager manager = new LinearLayoutManager(this);
-//        设置成竖直
-//        manager.setOrientation(RecyclerView.VERTICAL);
-//        recycleView.setLayoutManager(manager);
-//        子项分割线
-//        recycleView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-//        ContentAdapter contentAdapter = new ContentAdapter(contentList, manager, getSupportFragmentManager());
-//        recycleView.setAdapter(contentAdapter);
-
 
         }
     }

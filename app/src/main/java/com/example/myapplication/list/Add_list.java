@@ -65,7 +65,7 @@ public class Add_list extends AppCompatActivity {
     private List<Content> list;
     private String category = "未分类";
 
-
+    private Content content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +76,8 @@ public class Add_list extends AppCompatActivity {
         describes1 = (EditText) findViewById(R.id.describes_1);
         title1 = (EditText) findViewById(R.id.title_1);
         endDate = findViewById(R.id._time);
-        pinned = findViewById(R.id.pinned);
         sortPicker = findViewById(R.id.sort);
         manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
 
 
         Content oldData = getIntent().getParcelableExtra("con");
@@ -89,11 +87,14 @@ public class Add_list extends AppCompatActivity {
 //        置的一个 Content 对象，它实现了 Parcelable 接口以便能够在不同的 Activity 之间传递。
         boolean isUpdate = (oldData != null);
         if (isUpdate) {
-            category = oldData.getCategory();
-            title1.setText(oldData.getTitle());
-            describes1.setText(oldData.getDescribes());
-            dateTextView.setText(oldData.getDate());
-        }
+                content = oldData;
+                category = oldData.getCategory();
+                title1.setText(oldData.getTitle());
+                describes1.setText(oldData.getDescribes());
+                dateTextView.setText(oldData.getDate());
+            } else {
+                content = new Content();
+            }
 
         endDate.setOnClickListener(this::onClick);
         sortPicker.setOnClickListener(new View.OnClickListener() {
@@ -133,13 +134,7 @@ public class Add_list extends AppCompatActivity {
 
         ImageView save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
-            Content content;
-            if (isUpdate) {
-                content = oldData;
-            } else {
-                content = new Content();
-            }
-
+            //第一次写未更新时
             content.setDescribes(describes1.getText().toString());
             content.setTitle(title1.getText().toString());
             content.setDate(dateTextView.getText().toString());
@@ -176,9 +171,10 @@ public class Add_list extends AppCompatActivity {
 
 
     public void onClick(View v) {
-        MaterialDatePicker.Builder<Long> pairBuilder = MaterialDatePicker.Builder.datePicker();
+        Builder<Long> pairBuilder = Builder.datePicker();
         MaterialDatePicker<Long> picker = pairBuilder
                 .setSelection(System.currentTimeMillis())
+                .setTheme(R.style.ThemeOverlay_App_DatePicker)
                 .build();
 
 
@@ -212,8 +208,7 @@ public class Add_list extends AppCompatActivity {
                     .setHour(12)
                     .setMinute(10)
                     .setTitleText("Select Appointment time")
-                    //todo
-//                    .setTheme(R.style.ThemeOverlay_App_TimePicker )
+//                    .setTheme(R.style.Theme_App)
                     .build();
             timePicker.show(getSupportFragmentManager(), "tag");
             timePicker.addOnPositiveButtonClickListener(v1 -> {
@@ -222,18 +217,13 @@ public class Add_list extends AppCompatActivity {
                 LocalDateTime DataTime = Date.atTime(hour, minute);
                 DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String DateText = DataTime.format(pattern);
-//                String endDateText = endDataTime.format(pattern);
                 dateTextView.setText(DateText);
             });
         });
         picker.addOnNegativeButtonClickListener((dialog) -> {
-            // 响应消极按钮点击
         });
     }
 
-//    public abstract class Context {
-//        public static final String NOTIFICATION_SERVICE = "notification";
-//    }
 
 
 }
