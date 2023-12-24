@@ -15,6 +15,48 @@ public class Content extends LitePalSupport implements Parcelable {
     private boolean isFinish = false;
     private boolean isOver = false;
 
+    protected Content(Parcel in) {
+        id = in.readLong();
+        title = in.readString();
+        describes = in.readString();
+        date = in.readString();
+        isPinned = in.readByte() != 0;
+        isFinish = in.readByte() != 0;
+        isOver = in.readByte() != 0;
+        category = in.readString();
+        userId = in.readLong();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(title);
+        dest.writeString(describes);
+        dest.writeString(date);
+        dest.writeByte((byte) (isPinned ? 1 : 0));
+        dest.writeByte((byte) (isFinish ? 1 : 0));
+        dest.writeByte((byte) (isOver ? 1 : 0));
+        dest.writeString(category);
+        dest.writeLong(userId);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Content> CREATOR = new Creator<Content>() {
+        @Override
+        public Content createFromParcel(Parcel in) {
+            return new Content(in);
+        }
+
+        @Override
+        public Content[] newArray(int size) {
+            return new Content[size];
+        }
+    };
+
     public String getCategory() {
         return category;
     }
@@ -38,41 +80,7 @@ public class Content extends LitePalSupport implements Parcelable {
 
 
     ///////////////////
-    protected Content(Parcel in) {
-        id = in.readLong();
-        title = in.readString();
-        describes = in.readString();
-        date = in.readString();
-        isPinned = in.readByte() != 0;
-        isFinish = in.readByte() != 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(title);
-        dest.writeString(describes);
-        dest.writeString(date);
-        dest.writeByte((byte) (isPinned ? 1 : 0));
-        dest.writeByte((byte) (isFinish ? 1 : 0));
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Content> CREATOR = new Creator<Content>() {
-        @Override
-        public Content createFromParcel(Parcel in) {
-            return new Content(in);
-        }
-
-        @Override
-        public Content[] newArray(int size) {
-            return new Content[size];
-        }
-    };
 
     public boolean isFinish() {
         return isFinish;
@@ -87,16 +95,17 @@ public class Content extends LitePalSupport implements Parcelable {
 
     //////////////////////
 
-    public User getUser() {
-        return user;
+
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     // 与 User 表关联
-    public User user;
+    public long userId;
 
     public String getTitle() {
         return title;
@@ -150,7 +159,7 @@ public class Content extends LitePalSupport implements Parcelable {
                 ", isFinish=" + isFinish +
                 ", isOver=" + isOver +
                 ", category='" + category + '\'' +
-                ", user=" + user +
+                ", userId=" + userId +
                 '}';
     }
 }

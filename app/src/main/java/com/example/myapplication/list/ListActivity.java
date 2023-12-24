@@ -180,16 +180,18 @@ public class ListActivity extends AppCompatActivity {
 
         Menu menu = navigationView.getMenu();
         MenuItem totalNumberItem = menu.findItem(R.id.total_number_item);
+
+        User currentUser = User.getSignedInUser();
 //        totalNumberItem.setTitleCondensed(Color.RED);
-        int itemCount = LitePal.count("content");
+        int itemCount = LitePal.where("userid = ?", "" + currentUser.getId()).count("content");
         totalNumberItem.setTitle("待办事项总数：" + itemCount);
 
         MenuItem completeditem = menu.findItem(R.id.completed_item);
-        int deletedItemCount = LitePal.where("isFinish = ?", "1").count(Content.class);
+        int deletedItemCount = LitePal.where("userid = ?", "" + currentUser.getId()).where("isFinish = ?", "1").count(Content.class);
         completeditem.setTitle("已完成事项数：" + deletedItemCount);
 
         MenuItem overdueitem = menu.findItem(R.id.overdue_item);
-        int overdueItemCount = LitePal.where("isOver = ?", "1").count(Content.class);
+        int overdueItemCount = LitePal.where("userid = ?", "" + currentUser.getId()).where("isOver = ?", "1").count(Content.class);
         overdueitem.setTitle("已过期事项数：" + overdueItemCount);
 
 
@@ -245,7 +247,8 @@ public class ListActivity extends AppCompatActivity {
         mGetContent.launch("image/*");
     }
     public void initContents() {
-        contentList = LitePal.order("ispinned desc").order("datetime('date') desc").find(Content.class);
+        User currentUser = User.getSignedInUser();
+        contentList = LitePal.order("ispinned desc").where("userid = ?", "" + currentUser.getId()).order("datetime('date') desc").find(Content.class);
         Log.d("initContents: ", contentList.toString());
     }
 
@@ -261,7 +264,7 @@ public class ListActivity extends AppCompatActivity {
         if (currentUser == null) {
             titleList = CollectionsKt.emptyList();
         } else {
-            List<Content> categoryList = LitePal.select("category").where("user_id = ?", "" + currentUser.getId()).find(Content.class);
+            List<Content> categoryList = LitePal.select("category").where("userid = ?", "" + currentUser.getId()).find(Content.class);
             titleList = CollectionsKt.map(categoryList, content -> new Title(content.getCategory(), false));
             titleList = CollectionsKt.distinct(titleList);
         }

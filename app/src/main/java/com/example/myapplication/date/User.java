@@ -15,9 +15,6 @@ public class User extends LitePalSupport {
 
     private boolean isRemember = false;
 
-    // 关联 Content 表，多对一
-    public List<Content> contents;
-
     @Column(unique = true, index = true)
     private  String username;
 

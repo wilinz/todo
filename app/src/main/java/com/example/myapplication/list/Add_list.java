@@ -144,7 +144,7 @@ public class Add_list extends AppCompatActivity {
             // 将 Content 与 当前登录的 User 关联
             User currentUser = User.getSignedInUser();
             if (currentUser != null) {
-                content.setUser(currentUser);
+                content.setUserId(currentUser.getId());
             }else {
                 Toast.makeText(this,"您未登录，无法添加待办事项",Toast.LENGTH_SHORT).show();
             }

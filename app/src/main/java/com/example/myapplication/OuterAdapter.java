@@ -60,7 +60,7 @@ public class OuterAdapter extends RecyclerView.Adapter<OuterAdapter.OuterViewHol
             if (sorttitle.getContentList()==null){
                 // 根据用户获取 Content
                 if (currentUser != null) {
-                    List<Content> subitems = LitePal.where("category = ?", sorttitle.getCategory()).where("user_id = ?", "" + currentUser.getId()).find(Content.class);
+                    List<Content> subitems = LitePal.where("category = ?", sorttitle.getCategory()).where("userid = ?", "" + currentUser.getId()).find(Content.class);
                     sorttitle.setContentList(subitems);
                 }else {
                     sorttitle.setContentList(CollectionsKt.emptyList());
